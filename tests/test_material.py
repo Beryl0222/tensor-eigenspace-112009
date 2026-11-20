@@ -16,3 +16,14 @@ class MaterialTests(unittest.TestCase):
         self.assertLess(d["cluster_atol"], gap)
         self.assertLess(gap, d["grad_gap"])
         self.assertGreater(d["profile"]["n"]**2*8, d["profile"]["scratch_bytes"])
+
+    def test_block_source(self):
+        from block_fixture import SymmetricBlocks
+
+        profile = read_session()["profile"]
+        source = SymmetricBlocks(profile)
+        cross = source.read(1, 4, 2, 5)
+        self.assertTrue((cross == source.read(2, 5, 1, 4).T).all())
+        self.assertEqual(source.read(6, 8, 6, 8).diagonal().tolist(), [4, 2])
+        with self.assertRaises(ValueError):
+            source.read(0, profile["block_size"] + 1, 0, 1)

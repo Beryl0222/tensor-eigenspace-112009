@@ -5,3 +5,5 @@
 使用 Python 3.11 和固定依赖。新环境先执行 `python3 -m pip install -r requirements.txt`。
 
 运行 `python3 inspect_fixture.py` 可以核对资料文件、内容指纹和顶层记录结构。执行 `python3 -m unittest discover -s tests -v` 检查资料中的逻辑引用与输入关系。
+
+`block_fixture.SymmetricBlocks` 提供大工位资料的只读矩形访问，使用 `profile` 创建实例，再通过 `read(row_start, row_stop, col_start, col_stop)` 读取半开矩形。
