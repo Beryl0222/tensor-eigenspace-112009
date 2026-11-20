@@ -1,0 +1,18 @@
+"""检查本地交换资料的案例是否互相关联。"""
+import unittest
+
+from inspect_fixture import read_session
+
+
+class MaterialTests(unittest.TestCase):
+    def test_linked_records(self):
+        d = read_session()
+        cap, room, display = d["requests"]
+        self.assertEqual(cap["matrix"], room["matrix"])
+        self.assertLess(cap["cap"], room["cap"])
+        self.assertLess(abs(room["matrix"][1][1]-room["matrix"][2][2]), d["cluster_atol"])
+        self.assertGreater(room["matrix"][-1][-1], room["matrix"][0][0])
+        gap = display["matrix"][1][1] - display["matrix"][2][2]
+        self.assertLess(d["cluster_atol"], gap)
+        self.assertLess(gap, d["grad_gap"])
+        self.assertGreater(d["profile"]["n"]**2*8, d["profile"]["scratch_bytes"])
